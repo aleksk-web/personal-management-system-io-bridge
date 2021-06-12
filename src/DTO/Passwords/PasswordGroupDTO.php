@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Passwords;
+namespace App\PmsIo\DTO\Passwords;
 
 /**
  * Class PasswordGroupDTO

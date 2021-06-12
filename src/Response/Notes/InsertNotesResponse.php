@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Response\Notes;
+namespace App\PmsIo\Response\Notes;
 
 
-use App\Response\BaseResponse;
+use App\PmsIo\Response\BaseResponse;
 
 /**
  * Class InsertNotesResponse

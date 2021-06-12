@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Notes;
+namespace App\PmsIo\DTO\Notes;
 
 /**
  * Class NoteDTO

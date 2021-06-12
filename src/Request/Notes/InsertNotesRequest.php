@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Request\Notes;
+namespace App\PmsIo\Request\Notes;
 
 
-use App\DTO\Notes\NoteDTO;
-use App\Request\BaseRequest;
+use App\PmsIo\DTO\Notes\NoteDTO;
+use App\PmsIo\Request\BaseRequest;
 
 /**
  * Class InsertNotesRequest

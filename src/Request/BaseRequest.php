@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Request;
+namespace App\PmsIo\Request;
 
 /**
  * Info: the logic for validation is not used at this point, was only prepared.

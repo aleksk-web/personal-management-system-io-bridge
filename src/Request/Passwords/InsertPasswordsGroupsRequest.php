@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Request\Passwords;
+namespace App\PmsIo\Request\Passwords;
 
 
-use App\DTO\Passwords\PasswordGroupDTO;
-use App\Request\BaseRequest;
+use App\PmsIo\DTO\Passwords\PasswordGroupDTO;
+use App\PmsIo\Request\BaseRequest;
 
 /**
  * Class InsertPasswordsGroupsRequest

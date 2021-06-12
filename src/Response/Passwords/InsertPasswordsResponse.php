@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Response\Passwords;
+namespace App\PmsIo\Response\Passwords;
 
 
-use App\Response\BaseResponse;
+use App\PmsIo\Response\BaseResponse;
 
 /**
  * Class InsertPasswordsResponse

@@ -1,20 +1,20 @@
 <?php
 
 
-namespace App;
+namespace App\PmsIo;
 
 
-use App\Request\BaseRequest;
-use App\Request\Notes\InsertNotesCategoriesRequest;
-use App\Request\Notes\InsertNotesRequest;
-use App\Request\Passwords\InsertPasswordsGroupsRequest;
-use App\Request\Passwords\InsertPasswordsRequest;
-use App\Response\BaseResponse;
-use App\Response\Notes\InsertNotesCategoriesResponse;
-use App\Response\Notes\InsertNotesResponse;
-use App\Response\Passwords\InsertPasswordsGroupsResponse;
-use App\Response\Passwords\InsertPasswordsResponse;
-use App\Service\GuzzleHttpService;
+use App\PmsIo\Request\BaseRequest;
+use App\PmsIo\Request\Notes\InsertNotesCategoriesRequest;
+use App\PmsIo\Request\Notes\InsertNotesRequest;
+use App\PmsIo\Request\Passwords\InsertPasswordsGroupsRequest;
+use App\PmsIo\Request\Passwords\InsertPasswordsRequest;
+use App\PmsIo\Response\BaseResponse;
+use App\PmsIo\Response\Notes\InsertNotesCategoriesResponse;
+use App\PmsIo\Response\Notes\InsertNotesResponse;
+use App\PmsIo\Response\Passwords\InsertPasswordsGroupsResponse;
+use App\PmsIo\Response\Passwords\InsertPasswordsResponse;
+use App\PmsIo\Service\GuzzleHttpService;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Monolog\Handler\StreamHandler;
@@ -44,12 +44,25 @@ class PmsIoBridge
      */
     private Logger $logger;
 
-    public function __construct(string $logFilePath, string $loggerName, string $baseUrl)
+    /**
+     * @var string $login
+     */
+    private string $login;
+
+    /**
+     * @var string $password
+     */
+    private string $password;
+
+    public function __construct(string $logFilePath, string $loggerName, string $baseUrl, string $login, string $password)
     {
         $this->baseUrl           = $baseUrl;
         $this->guzzleHttpService = new GuzzleHttpService();
         $this->logger            = new Logger($loggerName);
         $this->logger->pushHandler(new StreamHandler($logFilePath, Logger::DEBUG));
+
+        $this->login    = $login;
+        $this->password = $password;
     }
 
     /**
@@ -123,6 +136,9 @@ class PmsIoBridge
     private function sendRequest(BaseRequest $baseRequest, BaseResponse $baseResponse): BaseResponse
     {
         try{
+            $baseRequest->setLogin($this->login);
+            $baseRequest->setPassword($this->password);
+
             $this->logCalledApiMethod($baseRequest);
             {
                 $absoluteCalledUrl = $this->buildAbsoluteCalledUrlForRequest($baseRequest);

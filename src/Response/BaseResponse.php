@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Response;
+namespace App\PmsIo\Response;
 
 
-use App\Exception\MalformedJsonException;
+use App\PmsIo\Exception\MalformedJsonException;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 
 /**
