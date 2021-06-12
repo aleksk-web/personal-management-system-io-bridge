@@ -16,6 +16,7 @@ use App\PmsIo\Response\Passwords\InsertPasswordsGroupsResponse;
 use App\PmsIo\Response\Passwords\InsertPasswordsResponse;
 use App\PmsIo\Service\GuzzleHttpService;
 use Exception;
+use Firebase\JWT\JWT;
 use GuzzleHttp\Exception\GuzzleException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -28,6 +29,11 @@ use TypeError;
  */
 class PmsIoBridge
 {
+    const KEY_ACCESS_DATA = "accessData";
+    const ALG_HS256       = "HS256";
+
+    const KEY_PROPERTY_LOGIN    = "login";
+    const KEY_PROPERTY_PASSWORD = "password";
 
     /**
      * @var GuzzleHttpService $guzzleHttpService
@@ -54,7 +60,12 @@ class PmsIoBridge
      */
     private string $password;
 
-    public function __construct(string $logFilePath, string $loggerName, string $baseUrl, string $login, string $password)
+    /**
+     * @var string $secret
+     */
+    private string $secret;
+
+    public function __construct(string $logFilePath, string $loggerName, string $baseUrl, string $login, string $password, string $secret)
     {
         $this->baseUrl           = $baseUrl;
         $this->guzzleHttpService = new GuzzleHttpService();
@@ -63,6 +74,7 @@ class PmsIoBridge
 
         $this->login    = $login;
         $this->password = $password;
+        $this->secret   = $secret;
     }
 
     /**
@@ -136,13 +148,14 @@ class PmsIoBridge
     private function sendRequest(BaseRequest $baseRequest, BaseResponse $baseResponse): BaseResponse
     {
         try{
-            $baseRequest->setLogin($this->login);
-            $baseRequest->setPassword($this->password);
-
             $this->logCalledApiMethod($baseRequest);
             {
+                $accessDataHeaderContent = $this->buildAccessDataHeaderContent();
+
                 $absoluteCalledUrl = $this->buildAbsoluteCalledUrlForRequest($baseRequest);
-                $guzzleResponse    = $this->guzzleHttpService->sendPostRequest($absoluteCalledUrl, $baseRequest->toArray());
+                $guzzleResponse    = $this->guzzleHttpService->sendPostRequest($absoluteCalledUrl, $baseRequest->toArray(), [
+                    self::KEY_ACCESS_DATA => $accessDataHeaderContent,
+                ]);
 
                 $baseResponse->prefillBaseFieldsFromJsonString($guzzleResponse);
             }
@@ -208,6 +221,22 @@ class PmsIoBridge
         $this->logger->info("Got response from called endpoint", [
             "response" => $response->toJson(),
         ]);
+    }
+
+    /**
+     * Will build access data header content
+     *
+     * @return string
+     */
+    private function buildAccessDataHeaderContent(): string
+    {
+        $payload = [
+            self::KEY_PROPERTY_PASSWORD => $this->password,
+            self::KEY_PROPERTY_LOGIN    => $this->login,
+        ];
+
+        $jwt = JWT::encode($payload, $this->secret);
+        return $jwt;
     }
 
 }
