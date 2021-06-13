@@ -207,7 +207,7 @@ class PmsIoBridge
             "calledMethod"  => debug_backtrace()[1]['function'], // need to use backtrace to get the correct calling method
             "baseUrl"       => $this->baseUrl,
             "requestUri"    => $request->getRequestUri(),
-            "dataBag"       => $request->toArray(),
+            "dataBag"       => "hidden, contains personal data",
         ]);
     }
 

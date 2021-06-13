@@ -8,10 +8,16 @@ namespace App\PmsIo\DTO\Notes;
  */
 class NoteCategoryDTO
 {
+    const KEY_ID        = "id";
     const KEY_ICON      = "icon";
     const KEY_NAME      = "name";
     const KEY_COLOR     = "color";
     const KEY_PARENT_ID = "parentId";
+
+    /**
+     * @var string $icon
+     */
+    private string $id = "";
 
     /**
      * @var string $icon
@@ -98,6 +104,22 @@ class NoteCategoryDTO
     }
 
     /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * Returns dto data in form of string
      *
      * @return string
@@ -116,6 +138,7 @@ class NoteCategoryDTO
     public function toArray(): array
     {
         return [
+            self::KEY_ID        => $this->getId(),
             self::KEY_ICON      => $this->getIcon(),
             self::KEY_NAME      => $this->getName(),
             self::KEY_COLOR     => $this->getColor(),
