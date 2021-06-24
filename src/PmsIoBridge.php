@@ -9,11 +9,13 @@ use App\PmsIo\Request\Notes\InsertNotesCategoriesRequest;
 use App\PmsIo\Request\Notes\InsertNotesRequest;
 use App\PmsIo\Request\Passwords\InsertPasswordsGroupsRequest;
 use App\PmsIo\Request\Passwords\InsertPasswordsRequest;
+use App\PmsIo\Request\System\SetTransferDoneStateRequest;
 use App\PmsIo\Response\BaseResponse;
 use App\PmsIo\Response\Notes\InsertNotesCategoriesResponse;
 use App\PmsIo\Response\Notes\InsertNotesResponse;
 use App\PmsIo\Response\Passwords\InsertPasswordsGroupsResponse;
 use App\PmsIo\Response\Passwords\InsertPasswordsResponse;
+use App\PmsIo\Response\System\SetTransferDoneStateResponse;
 use App\PmsIo\Service\GuzzleHttpService;
 use Exception;
 use Firebase\JWT\JWT;
@@ -132,6 +134,21 @@ class PmsIoBridge
     public function insertNotesCategories(InsertNotesCategoriesRequest $request): InsertNotesCategoriesResponse
     {
         $response = new InsertNotesCategoriesResponse();
+        $this->sendRequest($request, $response);
+
+        return $response;
+    }
+
+    /**
+     * Will call the PMS-IO to insert notes categories
+     *
+     * @param SetTransferDoneStateRequest $request
+     * @return SetTransferDoneStateResponse
+     * @throws GuzzleException
+     */
+    public function setTransferDoneState(SetTransferDoneStateRequest $request): SetTransferDoneStateResponse
+    {
+        $response = new SetTransferDoneStateResponse();
         $this->sendRequest($request, $response);
 
         return $response;

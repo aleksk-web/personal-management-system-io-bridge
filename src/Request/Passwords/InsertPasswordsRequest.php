@@ -16,7 +16,6 @@ class InsertPasswordsRequest extends BaseRequest
 
     const REQUEST_URI = "/api/passwords/insert-passwords";
 
-
     /**
      * @var PasswordDTO[] $passwordDtos
      */
